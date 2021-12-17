@@ -1,0 +1,88 @@
+type Collection {
+    ID: ID!
+    Name: String
+    Texts: [Text]
+}
+type Text {
+    ID: ID!
+    Title: String
+    Era_Composed: String
+    Manuscripts: [Manuscript]
+}
+type Manuscript {
+    ID: ID!
+    Accession_Number: String
+    Find_Date: String
+    Provenance: String
+    Date_Added: String
+    Marked_For_Deletion: Boolean
+    Collection_ID: Collection
+    Text_ID: Text 
+    Pages: [Page]
+}
+type Page {
+    ID: ID!
+    Number_In_Manuscript: Int
+    Image: String
+    Image_Preview: String
+    Image_Thumbnail: String
+    Horizont: Boolean 
+    Manuscript_ID: Manuscript
+    Lines: [Line]
+}
+type Line {
+    ID: ID!
+    Image: String
+    Number_In_Page: Int
+    Number_In_Manuscript: Int
+    Page_ID: Page
+    Shape: String
+    Glyphs: [Glyph]
+}
+type Glyph {
+    ID: ID!
+    Image: String
+    Number_In_Line: Int
+    Number_In_Page: Int
+    Unicode_Glyphs: String
+    Manuel_De_Codage: String
+    Moller_Number: String
+    Mainz_Number: String
+    Line_ID: Line
+    Shape: String
+}
+
+input TextInput {
+    Title: String
+    Era_Composed: String
+}
+input ManuscriptInput {
+    Collection_ID: Collection
+    Accession_Number: String
+    Date_Added: String
+    Marked_For_Deletion: Boolean
+}
+input PageInput {
+    Number_In_Manuscript: Int
+}
+input GlyphInput {
+    Number_In_Line: Int
+    Number_In_Page: Int
+    Unicode_Glyphs: String
+    Manuel_De_Codage: String
+    Moller_Number: String
+    Mainz_Number: String
+}
+
+//type Mutation {
+//    createManuscript(input: ManuscriptInput): Manuscript
+//
+}
+type Query {
+    getLines(Page_ID: Int!): [Line]
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}

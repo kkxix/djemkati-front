@@ -1,0 +1,32 @@
+service: ${file(./secrets.json):ApiName}
+
+provider: 
+  environment: 
+    POSTGRESQL_HOST=sobti.c3srntjg4zmr.us-east-1.rds.amazonaws.com
+    POSTGRESQL_PORT=5432
+    DB_NAME=${self:custom.DB_NAME}
+    USERNAME: ${self:custom.USERNAME}
+    PASSWORD: ${self:custom.PASSWORD}
+  custom: 
+    DB_NAME: DatabaseSobti
+    USERNAME: sobtiuser
+    PASSWORD: 6_Z8g?PCJpDBnvu~
+    HOST:
+      Fn::GetAtt: [PostgreSqlRDSInstance, Endpoint.Address]
+    PORT:
+      Fn::GetAtt: [PostgreSqlRDSInstance, Endpoint.Port]
+functions:
+  graphql:
+    handler: handler.server
+    events:
+      - http:
+          path: /
+          method: post
+          cors: true
+  playground:
+    handler: handler.playground
+    events:
+      - http:
+          path: /
+          method: get
+          cors: true
